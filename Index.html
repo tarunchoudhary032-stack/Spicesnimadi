@@ -1,0 +1,345 @@
+
+
+<!DOCTYPE html>  <html lang="en">  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  
+<title>Nimadi Spices | Authentic taste of nimad</title>  <!-- Google Font -->  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">  <style>  
+:root{  
+  --primary:#8B0000;  
+  --accent:#FFB703;  
+  --light:#fff8f0;  
+  --dark:#222;  
+}  
+  
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}  
+  
+body{background:var(--light);color:var(--dark);}  
+  
+header{  
+  background:var(--primary);  
+  color:white;  
+  padding:20px;  
+  text-align:center;  
+}  
+  
+header h1{font-size:24px;}  
+header p{font-size:14px;opacity:0.9;}  
+  
+.filters{  
+  display:flex;  
+  justify-content:center;  
+  gap:10px;  
+  padding:15px;  
+}  
+  
+.filters button{  
+  padding:8px 14px;  
+  border:none;  
+  background:white;  
+  border-radius:20px;  
+  cursor:pointer;  
+  font-size:13px;  
+  box-shadow:0 2px 5px rgba(0,0,0,0.1);  
+}  
+  
+.filters button.active{  
+  background:var(--accent);  
+  color:black;  
+}  
+  
+.products{  
+  display:grid;  
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));  
+  gap:15px;  
+  padding:15px;  
+}  
+  
+.card{  
+  background:white;  
+  border-radius:12px;  
+  overflow:hidden;  
+  box-shadow:0 4px 10px rgba(0,0,0,0.08);  
+  transition:0.3s;  
+}  
+  
+.card:hover{transform:translateY(-5px);}  
+  
+.card img{  
+  width:100%;  
+  height:150px;  
+  object-fit:cover;  
+}  
+  
+.card-content{  
+  padding:12px;  
+}  
+  
+.card-content h3{  
+  font-size:14px;  
+  margin-bottom:6px;  
+}  
+  
+.price{  
+  font-weight:600;  
+  color:var(--primary);  
+  margin-bottom:8px;  
+}  
+  
+.card button{  
+  width:100%;  
+  padding:8px;  
+  border:none;  
+  background:var(--primary);  
+  color:white;  
+  border-radius:6px;  
+  cursor:pointer;  
+  font-size:13px;  
+}  
+  
+.cart-icon{  
+  position:fixed;  
+  bottom:20px;  
+  right:20px;  
+  background:var(--primary);  
+  color:white;  
+  width:55px;  
+  height:55px;  
+  border-radius:50%;  
+  display:flex;  
+  justify-content:center;  
+  align-items:center;  
+  font-size:20px;  
+  cursor:pointer;  
+  box-shadow:0 4px 15px rgba(0,0,0,0.3);  
+}  
+  
+.cart-count{  
+  position:absolute;  
+  top:-5px;  
+  right:-5px;  
+  background:var(--accent);  
+  color:black;  
+  font-size:12px;  
+  padding:3px 6px;  
+  border-radius:50%;  
+}  
+  
+.modal{  
+  position:fixed;  
+  inset:0;  
+  background:rgba(0,0,0,0.5);  
+  display:none;  
+  justify-content:center;  
+  align-items:center;  
+  padding:15px;  
+}  
+  
+.modal-content{  
+  background:white;  
+  width:100%;  
+  max-width:500px;  
+  max-height:90vh;  
+  overflow-y:auto;  
+  border-radius:12px;  
+  padding:20px;  
+}  
+  
+.cart-item{  
+  display:flex;  
+  justify-content:space-between;  
+  align-items:center;  
+  margin-bottom:12px;  
+}  
+  
+.qty-controls button{  
+  padding:3px 8px;  
+  margin:0 5px;  
+}  
+  
+.total{  
+  font-weight:600;  
+  margin:15px 0;  
+}  
+  
+input, textarea{  
+  width:100%;  
+  padding:8px;  
+  margin:8px 0;  
+  border-radius:6px;  
+  border:1px solid #ccc;  
+}  
+  
+.place-btn{  
+  background:var(--primary);  
+  color:white;  
+  padding:10px;  
+  width:100%;  
+  border:none;  
+  border-radius:6px;  
+  cursor:pointer;  
+}  
+  
+.whatsapp{  
+  position:fixed;  
+  bottom:90px;  
+  right:20px;  
+  background:#25D366;  
+  color:white;  
+  padding:10px 15px;  
+  border-radius:30px;  
+  text-decoration:none;  
+  font-size:14px;  
+  box-shadow:0 4px 10px rgba(0,0,0,0.2);  
+}  
+</style>  </head>  <body>  <header>  
+<h1>Nimadi Spices</h1>  
+<p>Authentic taste of nimad</p>  
+</header>  <div class="filters">  
+<button class="active" onclick="filterCategory('All')">All</button>  
+<button onclick="filterCategory('Spices')">Spices</button>  
+</div>  <div class="products" id="productList"></div>  <!-- Cart Icon -->  <div class="cart-icon" onclick="openCart()">  
+🛒  
+<span class="cart-count" id="cartCount">0</span>  
+</div>  <a class="whatsapp" href="https://wa.me/917089641153" target="_blank">  
+Chat on WhatsApp  
+</a>  <!-- Cart Modal -->  <div class="modal" id="cartModal">  
+<div class="modal-content">  
+<h2>Your Cart</h2>  
+<div id="cartItems"></div>  
+<div class="total" id="grandTotal"></div>  <form id="orderForm" action="https://formspree.io/f/ https://formspree.io/f/xvzbnopq" method="POST">  
+<input type="hidden" name="orderDetails" id="orderDetails">  
+<input type="text" name="customerName" placeholder="Your Name" required>  
+<input type="tel" name="phone" placeholder="Phone Number" required>  
+<textarea name="address" placeholder="Delivery Address" required></textarea>  
+<textarea name="instructions" placeholder="Special Instructions (optional)"></textarea>  
+<button type="submit" class="place-btn">Place Order</button>  
+</form>  <button onclick="closeCart()" style="margin-top:10px;">Close</button>
+
+</div>  
+</div>  <script>  
+const products = [  
+{  
+name:"Red Chilli Powder (200g)",  
+price:77,  
+category:"Spices",  
+image:"https://i.ibb.co/Pv0yGq8c/nimadispices-1148782450.jpg",  
+description:"Pure natural chemical free and trusted premium indian species"  
+},  
+{  
+name:"Turmeric Powder (200g)",  
+price:77,  
+category:"Spices",  
+image:"https://i.ibb.co/BKqdXYpn/nimadispices-1148848680.jpg",  
+description:"Pure natural chemical free and trusted premium indian species"  
+},  
+{  
+name:"Coriander Powder (200g)",  
+price:77,  
+category:"Spices",  
+image:"https://i.ibb.co/WvCt7Cx4/nimadispices-1148876062.jpg",  
+description:"Pure natural chemical free and trusted premium indian species"  
+}  
+];  
+  
+let cart = JSON.parse(localStorage.getItem("cart")) || [];  
+  
+function saveCart(){  
+localStorage.setItem("cart",JSON.stringify(cart));  
+updateCartCount();  
+}  
+  
+function updateCartCount(){  
+document.getElementById("cartCount").innerText = cart.reduce((a,b)=>a+b.qty,0);  
+}  
+  
+function renderProducts(list){  
+const container=document.getElementById("productList");  
+container.innerHTML="";  
+list.forEach((p,i)=>{  
+container.innerHTML+=`  
+<div class="card">  
+<img src="${p.image}" loading="lazy" alt="${p.name}">  
+<div class="card-content">  
+<h3>${p.name}</h3>  
+<div class="price">₹${p.price}</div>  
+<button onclick="addToCart(${i})">Add to Cart</button>  
+</div>  
+</div>`;  
+});  
+}  
+  
+function filterCategory(cat){  
+document.querySelectorAll(".filters button").forEach(btn=>btn.classList.remove("active"));  
+event.target.classList.add("active");  
+if(cat==="All") renderProducts(products);  
+else renderProducts(products.filter(p=>p.category===cat));  
+}  
+  
+function addToCart(index){  
+const product=products[index];  
+const existing=cart.find(item=>item.name===product.name);  
+if(existing) existing.qty++;  
+else cart.push({...product,qty:1});  
+saveCart();  
+}  
+  
+function openCart(){  
+document.getElementById("cartModal").style.display="flex";  
+renderCart();  
+}  
+  
+function closeCart(){  
+document.getElementById("cartModal").style.display="none";  
+}  
+  
+function renderCart(){  
+const container=document.getElementById("cartItems");  
+container.innerHTML="";  
+let total=0;  
+cart.forEach((item,i)=>{  
+let subtotal=item.price*item.qty;  
+total+=subtotal;  
+container.innerHTML+=`  
+<div class="cart-item">  
+<div>  
+${item.name}<br>  
+₹${item.price} x ${item.qty} = ₹${subtotal}  
+</div>  
+<div class="qty-controls">  
+<button onclick="changeQty(${i},-1)">-</button>  
+<button onclick="changeQty(${i},1)">+</button>  
+<button onclick="removeItem(${i})">x</button>  
+</div>  
+</div>`;  
+});  
+document.getElementById("grandTotal").innerText="Total: ₹"+total;  
+document.getElementById("orderDetails").value=  
+cart.map(i=>`${i.name} | Qty: ${i.qty} | ₹${i.price*i.qty}`).join("\n")  
++`\n\nGrand Total: ₹${total}`;  
+}  
+  
+function changeQty(index,change){  
+cart[index].qty+=change;  
+if(cart[index].qty<=0) cart.splice(index,1);  
+saveCart();  
+renderCart();  
+}  
+  
+function removeItem(index){  
+cart.splice(index,1);  
+saveCart();  
+renderCart();  
+}  
+  
+document.getElementById("orderForm").addEventListener("submit",function(){  
+alert("Order placed! Nimadi Spices will contact you on WhatsApp to confirm.");  
+cart=[];  
+saveCart();  
+closeCart();  
+});  
+  
+renderProducts(products);  
+updateCartCount();  
+</script>  </body>  
+  </html>
